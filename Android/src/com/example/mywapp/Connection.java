@@ -8,11 +8,12 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import android.util.Log;
+import android.widget.Toast;
 
 
 public class Connection {
     private static String TAG = "MyWhatsApp";
-	private static String IP, DEVICE_ID;
+	private static String IP, DEVICE_ID, NAME, PASSWORD;
 	private static int PORT;
 	private static Object monitor, start;
 	private static Request whatToSend;
@@ -29,10 +30,12 @@ public class Connection {
 		return singleton;
 	}
 	
-	public static synchronized void startConnection (String serverIp, String device, int port) {
+	public static synchronized void startConnection (String serverIp, String device, int port, String name, String password) {
 		Connection.IP = serverIp;
 		Connection.DEVICE_ID = device;
 		Connection.PORT = port;
+		Connection.PASSWORD = password;
+		Connection.NAME = name;
 		monitor = new Object();
 		start = new Object();
 		
@@ -56,12 +59,12 @@ public class Connection {
 							oos = new ObjectOutputStream(os);
 							is = clientSocket.getInputStream();
 							ois = new ObjectInputStream(is);
-							oos.writeObject(new Online(DEVICE_ID));
+							oos.writeObject(new Online(DEVICE_ID, PASSWORD, NAME));
 							//Log.d(TAG, "deschid socketi output");							
 							
 							
 							while(!isDone) {
-								Log.d(TAG, "intru in while");
+								//Log.d(TAG, "intru in while");
 								synchronized (Connection.monitor) {
 									if (!started) {
 										synchronized (start) {
@@ -70,10 +73,10 @@ public class Connection {
 										}
 										started = true;
 									}
-									Log.d(TAG, "intru in wait");
+									//Log.d(TAG, "intru in wait");
 									try{
 										Connection.monitor.wait();
-										Log.d(TAG, "ies in wait");
+										//Log.d(TAG, "ies in wait");
 						            } catch(InterruptedException e){
 										Log.d(TAG, e.toString());
 						            }
@@ -150,6 +153,7 @@ public class Connection {
 
 	public static void stopConnection () {
 		sendThis(new Offline(DEVICE_ID));
+		started = false;
 		Log.d(TAG, "stop connection");
 	}
 		

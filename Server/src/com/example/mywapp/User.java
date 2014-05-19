@@ -23,8 +23,7 @@ public class User implements java.io.Serializable {
     }
     
     public synchronized boolean checkPassword (String passwd) {
-        //return password.equals(passwd);
-        return true;
+        return password.equals(passwd);
     }
     
     public synchronized String getPassword () {

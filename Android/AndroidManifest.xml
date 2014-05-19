@@ -32,6 +32,11 @@
         </activity>
         
         <activity 
+            android:name=".SignUp"
+        	android:theme="@style/Theme.MyTheme" >            
+        </activity>
+        
+        <activity 
             android:name=".MyWhatsapp"
         	android:theme="@style/Theme.MyTheme" >            
         </activity>

@@ -43,11 +43,13 @@ public class Server {
         return -1;
     }
     
-    public synchronized static boolean login (String imei, String password) {
+    public synchronized static boolean login (String imei, String password, String name) {
         int index;
         if ((index = existsUser(imei)) == -1) {
-            onlineUsers.add(_users.get(addUser(new User(imei, SecurePasswordGenerator.nextPassword(), "User" + _users.size()))));
-        } else {
+            System.out.println("userul nu exista .. il creez");
+            onlineUsers.add(_users.get(addUser(new User(imei, password, name))));
+        } else {            
+            System.out.println("userul exista il caut ");
             if (_users.get(index).checkPassword(password))
                 onlineUsers.add(_users.get(index));
             else 
@@ -156,7 +158,7 @@ class ClientHandler extends Thread {
         switch(request.type) {
             case ONLINE:
                 Online on = (Online)request;
-                if (!authenticated && Server.login(on.fromId, null)) {
+                if (!authenticated && Server.login(on.fromId, on.password, on.name)) {
                     authenticated = true;
                     userId = Server.getUserId(on.fromId);
                     System.out.println("Utilizatorul " + on.fromId + " este online!\t" + new Date().toString());

@@ -222,23 +222,6 @@ public class MyWhatsapp extends Activity {
 	        _dir.mkdir();
 	    }
 	}
-	
-	private File createImageFile() throws IOException {
-	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-	    String imageFileName = "JPEG_" + timeStamp + "_";
-	    File storageDir = Environment.getExternalStoragePublicDirectory(
-	            Environment.DIRECTORY_PICTURES);
-	    File image = File.createTempFile(
-	        imageFileName,  /* prefix */
-	        ".jpg",         /* suffix */
-	        storageDir      /* directory */
-	    );
-
-	    // Save a file: path for use with ACTION_VIEW intents
-	    //mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-	    
-	    return image;
-	}
 
 	private void dispatchTakePictureIntent() {
 		
